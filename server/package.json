@@ -1,21 +1,15 @@
 {
-  "name": "int20h2019",
+  "name": "int20h2019-server",
   "version": "0.1.0",
-  "description": "Test task for INT20H hackathon",
-  "main": "index.js",
+  "description": "Server for test task for INT20H hackathon",
+  "main": "app.js",
+  "repository": "https://github.com/meta-coders/int20h2019/tree/master/server",
+  "author": "o-rumiantsev",
+  "license": "MIT",
+  "scripts": {
+    "start": "./app.sh"
+  },
   "dependencies": {
     "express": "^4.16.4"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "hackathon",
-    "emotions",
-    "metateam",
-    "express"
-  ],
-  "author": "",
-  "license": "MIT"
+  }
 }
