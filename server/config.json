@@ -1,5 +1,4 @@
 {
-
   "server": {
     "host": "localhost",
     "port": "8000"
@@ -34,5 +33,4 @@
   "facepp": {
     "minEmotionPercentage": 0.3
   }
-
 }

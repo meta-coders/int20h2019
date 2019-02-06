@@ -7,10 +7,20 @@
   "author": "o-rumiantsev",
   "license": "MIT",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "lint": "eslint .",
+    "fmt": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\" \".*rc\" \"**/*.yml\""
   },
   "dependencies": {
     "express": "^4.16.4",
     "mongodb": "^3.1.13"
+  },
+  "devDependencies": {
+    "eslint": "^5.13.0",
+    "eslint-config-metarhia": "^7.0.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "prettier": "^1.16.4"
   }
 }
