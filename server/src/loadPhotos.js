@@ -90,13 +90,16 @@ const detectPhoto = photo => new Promise((resolve, reject) => {
       clearTimeout(timeout);
       if (detected.error_message) throw detected.error_message;
       photo.emotions = getEmotions(detected.faces);
+      console.clear();
+      console.count('Detected');
       resolve();
     })
     .catch(e => {
-     if (!timedout) {
-       clearTimeout(timeout);
-       reject(e);
-     }
+      if (!timedout) {
+        console.error(e);
+        clearTimeout(timeout);
+        reject(e);
+      }
     });
 });
 
@@ -127,9 +130,10 @@ const loadPhotos = async () => {
 
   if (photosToSave.length > 0) {
     await detectPhotos(photosToSave);
+    const detected = photosToSave.filter(p => !!p.emotions);
     const { insertedCount } = await db
       .collection('Images')
-      .insertMany(photosToSave);
+      .insertMany(detected);
     console.info(`Saved ${insertedCount} images.`);
   } else {
     console.info(`Nothing to save.`);

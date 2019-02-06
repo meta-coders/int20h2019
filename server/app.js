@@ -2,6 +2,7 @@
 
 const express = require('express');
 const loadPhotos = require('./src/loadPhotos');
+const { connect } = require('./src/db');
 
 global.config = require('./config');
 
@@ -15,3 +16,9 @@ loadPhotos()
   })
   .catch(e => console.error('Setup failed\n', e));
 
+
+app.get('/photos', async (req, res) => {
+  const db = await connect();
+  const photos = await db.collection('Images').find({}).toArray();
+  res.json({ photos });
+});
