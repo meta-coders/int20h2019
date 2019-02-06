@@ -11,11 +11,15 @@
 
   "api": {
     "flickr": {
+      "api_key": "PLACE HERE YOUR API KEY",
+      "secret": "PLACE HERE YOUR API SECRET",
       "userId": "144522605@N06",
       "photosetId": "72157674388093532"
     },
 
     "facepp": {
+      "api_key": "PLACE HERE YOUR API KEY",
+      "secret": "PLACE HERE YOUR API SECRET",
       "requestTimeout": 30000,
       "concurrentLimit": 3
     }
