@@ -12,16 +12,11 @@
 
   "api": {
     "flickr": {
-      "apiKey": "5923e3353e6f6dea9a6de8092364551f",
-      "secret": "0702475834b10b50",
       "userId": "144522605@N06",
       "photosetId": "72157674388093532"
     },
 
     "facepp": {
-      "apiKey": "_XDGIcWbHzO4sn6doOiZozo6fBN-ph7G",
-      "secret": "7vxjwF0MKpL_AZKThU33V6e1km-jCkLw",
-      "facesetToken": "5c20f204377b79963a1f4fbaef2aa0cb",
       "requestTimeout": 30000,
       "concurrentLimit": 3
     }
