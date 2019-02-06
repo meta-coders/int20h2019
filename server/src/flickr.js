@@ -2,13 +2,6 @@
 
 const https = require('https');
 const qs = require('querystring');
-const API_URL = 'https://api.flickr.com/services/rest/?format=json&';
-
-const {
-  FLICKR_API_KEY,
-  FLICKR_USER_ID,
-  FLICKR_PHOTOSET_ID,
-} = process.env;
 
 const parseResponse = data => {
   data = data.replace(/jsonFlickrApi\(/, '');
@@ -17,9 +10,9 @@ const parseResponse = data => {
 };
 
 const fetch = options => {
-  options.api_key = FLICKR_API_KEY;
+  options.api_key = config.api.flickr.apiKey;
 
-  const url = API_URL + qs.stringify(options);
+  const url = config.resources.flickr + qs.stringify(options);
 
   return new Promise((resolve, reject) => {
     https.get(url, res => {
@@ -43,13 +36,11 @@ const getPhotoURL = ({ farm: farmId, server: serverId, secret, id }) =>
 module.exports = {
   fetch,
   getPhotoURL,
-  apiKey: FLICKR_API_KEY,
-  userId: FLICKR_USER_ID,
-  photosetId: FLICKR_PHOTOSET_ID,
   fetchPhotos: options => fetch({ method: 'flickr.photos.search', ...options }),
-  fetchPhotoset: () => fetch({
+  fetchPhotoset: options => fetch({
     method: 'flickr.photosets.getPhotos',
-    user_id: FLICKR_USER_ID,
-    photoset_id: FLICKR_PHOTOSET_ID,
+    user_id: config.api.flickr.userId,
+    photoset_id: config.api.flickr.photosetId,
+    ...options,
   }),
 };

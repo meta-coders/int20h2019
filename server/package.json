@@ -7,7 +7,7 @@
   "author": "o-rumiantsev",
   "license": "MIT",
   "scripts": {
-    "start": "./app.sh"
+    "start": "node app.js"
   },
   "dependencies": {
     "express": "^4.16.4",

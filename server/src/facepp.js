@@ -2,24 +2,16 @@
 
 const https = require('https');
 const qs = require('querystring');
-const API_URL = 'https://api-us.faceplusplus.com/facepp/v3';
-
-const {
-  FACEPP_API_KEY,
-  FACEPP_SECRET,
-  FACEPP_FACESET_TOKEN,
-} = process.env;
-
 
 const createForm = obj => qs.stringify(obj);
 
 const fetch = (method, options) => {
   options = Object.assign({
-    api_key: FACEPP_API_KEY,
-    api_secret: FACEPP_SECRET,
+    api_key: config.api.facepp.apiKey,
+    api_secret: config.api.facepp.secret,
   }, options);
 
-  const url = API_URL + method;
+  const url = config.resources.facepp + method;
   const formData = createForm(options);
   const req = https.request(url, { method: 'POST' });
   req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -44,9 +36,6 @@ const fetch = (method, options) => {
 };
 
 module.exports = {
-  apiKey: FACEPP_API_KEY,
-  apiSecret: FACEPP_SECRET,
-  facesetToken: FACEPP_FACESET_TOKEN,
   fetch,
   detect: options => fetch('/detect', options),
 };
