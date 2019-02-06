@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const { MongoClient } = require("mongodb");
+const { MongoClient } = require('mongodb');
 
 const connect = () =>
   new Promise((resolve, reject) =>

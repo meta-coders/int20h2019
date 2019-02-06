@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const promisify = fn => (...args) =>
   new Promise((res, rej) =>
@@ -9,5 +9,5 @@ const promisify = fn => (...args) =>
   );
 
 module.exports = {
-  promisify
+  promisify,
 };

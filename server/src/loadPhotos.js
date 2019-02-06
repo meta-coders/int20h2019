@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-const { connect } = require("./db");
-const flickr = require("./flickr");
-const facepp = require("./facepp");
+const { connect } = require('./db');
+const flickr = require('./flickr');
+const facepp = require('./facepp');
 
 const fetchPages = async (key, fetcher, options) => {
   const result = await fetcher(options);
-  if (result.stat === "fail") throw result.message;
+  if (result.stat === 'fail') throw result.message;
 
   const results = [result[key]];
   const more = result[key].page < result[key].pages;
@@ -15,7 +15,7 @@ const fetchPages = async (key, fetcher, options) => {
 
   for (let i = 2; i <= result[key].pages; ++i) {
     const result = await fetcher({ page: i, ...options });
-    if (result.stat === "fail") throw result.message;
+    if (result.stat === 'fail') throw result.message;
     results.push(result[key]);
   }
 
@@ -23,17 +23,17 @@ const fetchPages = async (key, fetcher, options) => {
 };
 
 const fetchPhotoset = async () => {
-  const photoset = await fetchPages("photoset", flickr.fetchPhotoset);
+  const photoset = await fetchPages('photoset', flickr.fetchPhotoset);
   return [].concat(...photoset.map(part => part.photo));
 };
 
 const fetchTagged = async () => {
-  const tagged = await fetchPages("photos", flickr.fetchPhotos, config.flickr);
+  const tagged = await fetchPages('photos', flickr.fetchPhotos, config.flickr);
   return [].concat(...tagged.map(part => part.photo));
 };
 
 const photos = async () => {
-  console.info("Fetching images from Flickr API...");
+  console.info('Fetching images from Flickr API...');
 
   const photoset = await fetchPhotoset();
   const tagged = await fetchTagged();
@@ -78,20 +78,20 @@ const detectPhoto = photo =>
   new Promise((resolve, reject) => {
     let timedout = false;
     const timeout = setTimeout(() => {
-      console.info("Request timeout.");
+      console.info('Request timeout.');
       timedout = true;
       resolve();
     }, config.api.facepp.requestTimeout);
 
     facepp
-      .detect({ image_url: photo.url, return_attributes: "emotion" })
+      .detect({ image_url: photo.url, return_attributes: 'emotion' })
       .then(detected => {
         if (timedout) return;
         clearTimeout(timeout);
         if (detected.error_message) throw detected.error_message;
         photo.emotions = getEmotions(detected.faces);
         console.clear();
-        console.count("Detected");
+        console.count('Detected');
         resolve();
       })
       .catch(e => {
@@ -115,14 +115,14 @@ Photos to detect: ${photos.length}`
     await Promise.all(slice.map(detectPhoto));
   }
 
-  console.info("Photos successfully detected");
+  console.info('Photos successfully detected');
 };
 
 const loadPhotos = async () => {
   const db = await connect();
 
   const savedPhotos = await db
-    .collection("Images")
+    .collection('Images')
     .find()
     .toArray();
   const loadedPhotos = await photos();
@@ -135,7 +135,7 @@ const loadPhotos = async () => {
     await detectPhotos(photosToSave);
     const detected = photosToSave.filter(p => !!p.emotions);
     const { insertedCount } = await db
-      .collection("Images")
+      .collection('Images')
       .insertMany(detected);
     console.info(`Saved ${insertedCount} images.`);
   } else {
