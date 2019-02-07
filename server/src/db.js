@@ -2,21 +2,17 @@
 
 const { MongoClient } = require('mongodb');
 
-const connect = () =>
-  new Promise((resolve, reject) =>
-    MongoClient.connect(
-      config.database.url,
-      { useNewUrlParser: true },
-      (err, client) => {
-        if (err) {
-          reject(err);
-        } else {
-          const db = client.db(config.database.name);
-          db.close = () => client.close();
-          resolve(db);
-        }
-      }
-    )
+const config = require('../config');
+
+const connect = async () => {
+  const client = await MongoClient.connect(
+    config.database.url,
+    { useNewUrlParser: true }
   );
+
+  const db = client.db(config.database.name);
+  db.close = () => client.close();
+  return db;
+};
 
 module.exports = { connect };

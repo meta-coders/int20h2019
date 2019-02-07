@@ -1,11 +1,9 @@
 'use strict';
 
-const https = require('https');
+const fetch = require('node-fetch');
 const qs = require('querystring');
 
-const createForm = obj => qs.stringify(obj);
-
-const fetch = (method, options) => {
+const request = async (method, options) => {
   options = Object.assign(
     {
       api_key: config.api.facepp.apiKey,
@@ -15,30 +13,17 @@ const fetch = (method, options) => {
   );
 
   const url = config.resources.facepp + method;
-  const formData = createForm(options);
-  const req = https.request(url, { method: 'POST' });
-  req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
-  req.setHeader('Content-Length', formData.length);
-  req.write(formData);
-  req.end();
-
-  return new Promise((resolve, reject) => {
-    req.on('response', res => {
-      const chunks = [];
-      res.on('data', c => chunks.push(c));
-      res.on('end', () => {
-        try {
-          const data = Buffer.concat(chunks).toString();
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(e);
-        }
-      });
-    });
-  });
+  const body = qs.stringify(options);
+  const reqOps = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body,
+  };
+  const res = await fetch(url, reqOps);
+  return res.json();
 };
 
 module.exports = {
-  fetch,
-  detect: options => fetch('/detect', options),
+  request,
+  detect: options => request('/detect', options),
 };
