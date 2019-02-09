@@ -1,14 +1,17 @@
 'use strict';
 
 const express = require('express');
+const loadConfig = require('./src/loadConfig');
 const loadPhotos = require('./src/loadPhotos');
 const { connect } = require('./src/db');
-
-global.config = require('./config');
 
 const app = express();
 
 console.info('Running server setup:');
+console.info('Loading config');
+
+loadConfig();
+
 loadPhotos()
   .then(() => {
     console.info('Successfully setup.');
