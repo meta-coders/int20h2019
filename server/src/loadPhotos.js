@@ -65,15 +65,6 @@ const getEmotions = faces => {
   return Array.from(emotions);
 };
 
-const split = (photos, limit) => {
-  const result = [];
-  while (photos.length) {
-    result.push(photos.slice(0, limit));
-    photos = photos.slice(limit);
-  }
-  return result;
-};
-
 const detectPhoto = photo =>
   new Promise((resolve, reject) => {
     let timedout = false;
@@ -107,10 +98,8 @@ const detectPhotos = async photos => {
 Photos to detect: ${photos.length}`
   );
 
-  const slices = split(photos, config.api.facepp.concurrentLimit);
-
-  for (const slice of slices) {
-    await Promise.all(slice.map(detectPhoto));
+  for (const photo of photos) {
+    await detectPhoto(photo);
   }
 
   console.info('All photos successfully detected');
