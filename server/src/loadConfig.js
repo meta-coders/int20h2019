@@ -7,7 +7,10 @@ const loadConfig = () => {
 		FLICKR_API_KEY,
 		FACEPP_API_KEY,
 		FACEPP_SECRET,
+		DATABASE_URL,
 	} = process.env;
+
+	config.databaseUrl = DATABASE_URL;
 
 	Object.assign(config.api.flickr, {
 		apiKey: FLICKR_API_KEY,

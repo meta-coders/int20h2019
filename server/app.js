@@ -3,6 +3,7 @@
 const express = require('express');
 const loadConfig = require('./src/loadConfig');
 const loadPhotos = require('./src/loadPhotos');
+
 const { connect } = require('./src/db');
 
 const app = express();
@@ -21,9 +22,6 @@ loadPhotos()
 
 app.get('/photos', async (req, res) => {
   const db = await connect();
-  const photos = await db
-    .collection('Images')
-    .find({})
-    .toArray();
+  const { rows: photos } = await db.query('SELECT * FROM "Images"');
   res.json({ photos });
 });

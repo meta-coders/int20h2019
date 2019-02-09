@@ -11,7 +11,7 @@
     },
 
     "facepp": {
-      "requestTimeout": 30000,
+      "requestTimeout": 10000,
       "concurrentLimit": 3
     }
   },
