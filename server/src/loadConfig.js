@@ -8,8 +8,10 @@ const loadConfig = () => {
 		FACEPP_API_KEY,
 		FACEPP_SECRET,
 		DATABASE_URL,
+		PORT,
 	} = process.env;
 
+	config.port = PORT;
 	config.databaseUrl = DATABASE_URL;
 
 	Object.assign(config.api.flickr, {

@@ -16,7 +16,7 @@ loadConfig();
 loadPhotos()
   .then(() => {
     console.info('Successfully setup.');
-    app.listen(config.server, () => console.info('Server started.'));
+    app.listen(config.port, '0.0.0.0', () => console.info('Server started.'));
   })
   .catch(e => console.error('Setup failed\n', e));
 
