@@ -1,0 +1,7 @@
+extends:
+  - metarhia
+  - plugin:prettier/recommended
+globals:
+  config: true
+rules:
+  camelcase: off
