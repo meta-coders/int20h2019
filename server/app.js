@@ -30,5 +30,6 @@ app.use(express.static('static'));
 app.get('/photos', async (req, res) => {
   const db = await connect();
   const { rows: photos } = await db.query('SELECT * FROM "Images"');
+  db.end();
   res.json({ photos });
 });
