@@ -20,6 +20,11 @@ loadPhotos()
   })
   .catch(e => console.error('Setup failed\n', e));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.get('/photos', async (req, res) => {
   const db = await connect();
   const { rows: photos } = await db.query('SELECT * FROM "Images"');
