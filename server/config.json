@@ -1,27 +1,12 @@
 {
-  "server": {
-    "host": "localhost",
-    "port": "8000"
-  },
-
-  "database": {
-    "name": "int20h2019-test",
-    "url": "mongodb://localhost:27017"
-  },
-
   "api": {
     "flickr": {
-      "api_key": "PLACE HERE YOUR API KEY",
-      "secret": "PLACE HERE YOUR API SECRET",
       "userId": "144522605@N06",
       "photosetId": "72157674388093532"
     },
 
     "facepp": {
-      "api_key": "PLACE HERE YOUR API KEY",
-      "secret": "PLACE HERE YOUR API SECRET",
-      "requestTimeout": 30000,
-      "concurrentLimit": 3
+      "requestTimeout": 10000
     }
   },
 

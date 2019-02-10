@@ -1,0 +1,17 @@
+{
+  "name": "int20h2019-test",
+  "description": "Emotions from INT20h Hackathon 2016",
+  "version": "1.0.0",
+  "engines": {
+    "node": "11.6.0",
+    "yarn": "1.x"
+  },
+  "scripts": {
+    "start": "node server/app.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "node-fetch": "^2.3.0",
+    "pg": "^7.8.0"
+  }
+}

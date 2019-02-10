@@ -1,26 +1,27 @@
 'use strict';
 
 const express = require('express');
+const loadConfig = require('./src/loadConfig');
 const loadPhotos = require('./src/loadPhotos');
-const { connect } = require('./src/db');
 
-global.config = require('./config');
+const { connect } = require('./src/db');
 
 const app = express();
 
 console.info('Running server setup:');
+console.info('Loading config');
+
+loadConfig();
+
 loadPhotos()
   .then(() => {
     console.info('Successfully setup.');
-    app.listen(config.server, () => console.info('Server started.'));
+    app.listen(config.port, '0.0.0.0', () => console.info('Server started.'));
   })
   .catch(e => console.error('Setup failed\n', e));
 
 app.get('/photos', async (req, res) => {
   const db = await connect();
-  const photos = await db
-    .collection('Images')
-    .find({})
-    .toArray();
+  const { rows: photos } = await db.query('SELECT * FROM "Images"');
   res.json({ photos });
 });

@@ -1,18 +1,23 @@
 'use strict';
 
-const { MongoClient } = require('mongodb');
+const { Client } = require('pg');
 
-const config = require('../config');
+const setupTable = `
+CREATE TABLE IF NOT EXISTS "Images" (
+	image_id TEXT PRIMARY KEY,
+	url TEXT,
+	emotions JSON
+)`;
 
 const connect = async () => {
-  const client = await MongoClient.connect(
-    config.database.url,
-    { useNewUrlParser: true }
-  );
+	const client = new Client({
+		connectionString: config.databaseUrl,
+	});
 
-  const db = client.db(config.database.name);
-  db.close = () => client.close();
-  return db;
+  await client.connect();
+	await client.query(setupTable);
+
+  return client;
 };
 
 module.exports = { connect };

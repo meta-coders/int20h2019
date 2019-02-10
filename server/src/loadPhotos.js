@@ -65,15 +65,6 @@ const getEmotions = faces => {
   return Array.from(emotions);
 };
 
-const split = (photos, limit) => {
-  const result = [];
-  while (photos.length) {
-    result.push(photos.slice(0, limit));
-    photos = photos.slice(limit);
-  }
-  return result;
-};
-
 const detectPhoto = photo =>
   new Promise((resolve, reject) => {
     let timedout = false;
@@ -90,13 +81,11 @@ const detectPhoto = photo =>
         clearTimeout(timeout);
         if (detected.error_message) throw detected.error_message;
         photo.emotions = getEmotions(detected.faces);
-        console.clear();
         console.count('Detected');
         resolve();
       })
       .catch(e => {
         if (!timedout) {
-          console.error(e);
           clearTimeout(timeout);
           reject(e);
         }
@@ -109,40 +98,43 @@ const detectPhotos = async photos => {
 Photos to detect: ${photos.length}`
   );
 
-  const slices = split(photos, config.api.facepp.concurrentLimit);
-
-  for (const slice of slices) {
-    await Promise.all(slice.map(detectPhoto));
+  for (const photo of photos) {
+    await detectPhoto(photo);
   }
 
-  console.info('Photos successfully detected');
+  console.info('All photos successfully detected');
 };
 
 const loadPhotos = async () => {
   const db = await connect();
 
-  const savedPhotos = await db
-    .collection('Images')
-    .find()
-    .toArray();
+  const { rows: savedPhotos } = await db.query('SELECT * FROM "Images"');
   const loadedPhotos = await photos();
 
   const photosToSave = loadedPhotos
-    .filter(({ id }) => !savedPhotos.some(img => img.id === id))
+    .filter(({ id }) => !savedPhotos.some(img => img.image_id === id))
     .map(p => ({ id: p.id, url: flickr.getPhotoURL(p) }));
 
-  if (photosToSave.length > 0) {
-    await detectPhotos(photosToSave);
-    const detected = photosToSave.filter(p => !!p.emotions);
-    const { insertedCount } = await db
-      .collection('Images')
-      .insertMany(detected);
-    console.info(`Saved ${insertedCount} images.`);
-  } else {
+  if (photosToSave.length === 0) {
     console.info(`Nothing to save.`);
+    db.end();
+    return;
   }
 
-  db.close();
+  try {
+    await detectPhotos(photosToSave);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    const detected = photosToSave.filter(p => !!p.emotions);
+    const queries = detected.map(({ id, url, emotions }) => db.query(
+      'INSERT INTO "Images" VALUES ($1, $2, $3)',
+      [id, url, JSON.stringify(emotions)]
+    ));
+    await Promise.all(queries);
+    console.info(`Saved ${detected.length} images.`);
+    db.end();
+  }
 };
 
 module.exports = loadPhotos;
