@@ -17,7 +17,7 @@ export const getPhotosFailure = error => ({
   payload: error,
 });
 
-export const getPhotos = () => ({
+export const getPhotos = url => ({
   type: GET_PHOTOS,
   loading: true,
   payload: { url },

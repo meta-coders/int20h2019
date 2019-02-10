@@ -1,8 +1,8 @@
-import { GEt_PHOTOS } from '../constants/photos';
+import { GET_PHOTOS } from '../constants/photos';
 import { getPhotos } from './modules/photos';
 
 const handlers = {
-  [GEt_PHOTOS]: getPhotos,
+  [GET_PHOTOS]: getPhotos,
 };
 
 export default store => next => action => {
