@@ -4,6 +4,8 @@ const express = require('express');
 const loadConfig = require('./src/loadConfig');
 const loadPhotos = require('./src/loadPhotos');
 
+const path = require('path');
+
 const { connect } = require('./src/db');
 
 const app = express();
@@ -26,6 +28,11 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static('static'));
+app.use(express.static('../front/build'));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname+'/../front/build/index.html'));
+});
 
 app.get('/photos', async (req, res) => {
   const db = await connect();
