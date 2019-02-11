@@ -1,0 +1,1 @@
+export const SET_FILTER_PARAM = 'FILTER_SET_FILTER_PARAM';
