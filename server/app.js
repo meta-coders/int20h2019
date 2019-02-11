@@ -27,8 +27,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static('static'));
-app.use(express.static('../front/build'));
+app.use('/', express.static(__dirname+'/../front/build'));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname+'/../front/build/index.html'));
