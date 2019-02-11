@@ -7,12 +7,18 @@
     "yarn": "1.x"
   },
   "scripts": {
-    "start": "node server/app.js",
+    "start": "npm run run",
+    "front": "cd front && npm start",
+    "back": "PORT=3001 node server/app.js",
+    "run": "concurrently \"npm run back\" \"npm run front\"",
     "heroku-postbuild": "cd front && npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {
     "express": "^4.16.4",
     "node-fetch": "^2.3.0",
     "pg": "^7.8.0"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
   }
 }
